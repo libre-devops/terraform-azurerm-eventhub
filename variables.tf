@@ -16,9 +16,9 @@ variable "eventhubs" {
     public_network_access_enabled = optional(bool)
     minimum_tls_version           = optional(string)
     network_rulesets = optional(object({
-      default_action                = optional(string)
-      public_network_access_enabled = optional(bool)
-      trusted_service_access_enabled     = optional(bool)
+      default_action                 = optional(string)
+      public_network_access_enabled  = optional(bool)
+      trusted_service_access_enabled = optional(bool)
       virtual_network_rule = optional(list(object({
         subnet_id                                       = string
         ignore_missing_virtual_network_service_endpoint = optional(bool)

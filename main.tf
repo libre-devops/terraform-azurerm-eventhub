@@ -20,9 +20,9 @@ resource "azurerm_eventhub_namespace" "eventhubs" {
   dynamic "network_rulesets" {
     for_each = each.value.network_rulesets != null ? [each.value.network_rulesets] : []
     content {
-      default_action                = try(network_rulesets.value.default_action, null)
-      public_network_access_enabled = try(network_rulesets.value.public_network_access_enabled, null)
-      trusted_service_access_enabled     = try(network_rulesets.value.trusted_service_access_enabled, null)
+      default_action                 = try(network_rulesets.value.default_action, null)
+      public_network_access_enabled  = try(network_rulesets.value.public_network_access_enabled, null)
+      trusted_service_access_enabled = try(network_rulesets.value.trusted_service_access_enabled, null)
 
       dynamic "virtual_network_rule" {
         for_each = network_rulesets.value.virtual_network_rule != null ? network_rulesets.value.virtual_network_rule : []

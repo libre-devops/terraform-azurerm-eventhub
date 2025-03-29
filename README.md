@@ -21,9 +21,9 @@ resource "azurerm_eventhub_namespace" "eventhubs" {
   dynamic "network_rulesets" {
     for_each = each.value.network_rulesets != null ? [each.value.network_rulesets] : []
     content {
-      default_action                = try(network_rulesets.value.default_action, null)
-      public_network_access_enabled = try(network_rulesets.value.public_network_access_enabled, null)
-      trusted_services_enabled      = try(network_rulesets.value.trusted_services_enabled, null)
+      default_action                 = try(network_rulesets.value.default_action, null)
+      public_network_access_enabled  = try(network_rulesets.value.public_network_access_enabled, null)
+      trusted_service_access_enabled = try(network_rulesets.value.trusted_service_access_enabled, null)
 
       dynamic "virtual_network_rule" {
         for_each = network_rulesets.value.virtual_network_rule != null ? network_rulesets.value.virtual_network_rule : []
@@ -104,11 +104,6 @@ resource "azurerm_eventhub" "eventhubs" {
           storage_account_id  = destination.value.storage_account_id
           blob_container_name = destination.value.blob_container_name
           archive_name_format = destination.value.archive_name_format
-
-          status             = try(destination.value.status, null)
-          capture_enabled    = try(destination.value.capture_enabled, false)
-          capture_interval   = try(destination.value.capture_interval, null)
-          capture_size_limit = try(destination.value.capture_size_limit, null)
         }
       }
     }
@@ -140,7 +135,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_eventhubs"></a> [eventhubs](#input\_eventhubs) | List of Eventhubs to create | <pre>list(object({<br/>    namespace_name                = string<br/>    location                      = optional(string, "uksouth")<br/>    rg_name                       = string<br/>    tags                          = optional(map(string))<br/>    identity_type                 = optional(string)<br/>    identity_ids                  = optional(list(string))<br/>    sku                           = optional(string)<br/>    capacity                      = optional(number)<br/>    auto_inflate_enabled          = optional(bool)<br/>    dedicated_cluster_id          = optional(string)<br/>    maximum_throughput_units      = optional(number)<br/>    local_authentication_enabled  = optional(bool)<br/>    public_network_access_enabled = optional(bool)<br/>    minimum_tls_version           = optional(string)<br/>    network_rulesets = optional(object({<br/>      default_action                = optional(string)<br/>      public_network_access_enabled = optional(bool)<br/>      trusted_services_enabled      = optional(bool)<br/>      virtual_network_rule = optional(list(object({<br/>        subnet_id                                       = string<br/>        ignore_missing_virtual_network_service_endpoint = optional(bool)<br/>      })))<br/>      ip_rule = optional(list(object({<br/>        ip_mask = string<br/>        action  = optional(string)<br/>      })))<br/>    }))<br/><br/>    create_eventhub   = optional(bool, true)<br/>    eventhub_name     = optional(string)<br/>    partition_count   = optional(number)<br/>    message_retention = optional(string)<br/><br/>    capture_description = optional(object({<br/>      enabled             = optional(bool)<br/>      encoding            = optional(string)<br/>      interval_in_seconds = optional(number)<br/>      size_limit_in_bytes = optional(number)<br/>      skip_empty_archives = optional(bool)<br/>      destination = optional(object({<br/>        name                = string<br/>        storage_account_id  = string<br/>        blob_container_name = string<br/>        archive_name_format = string<br/>        status              = optional(string)<br/>        capture_enabled     = optional(bool)<br/>        capture_interval    = optional(string)<br/>        capture_size_limit  = optional(string)<br/>      }))<br/>    }))<br/>  }))</pre> | n/a | yes |
+| <a name="input_eventhubs"></a> [eventhubs](#input\_eventhubs) | List of Eventhubs to create | <pre>list(object({<br/>    namespace_name                = string<br/>    location                      = optional(string, "uksouth")<br/>    rg_name                       = string<br/>    tags                          = optional(map(string))<br/>    identity_type                 = optional(string)<br/>    identity_ids                  = optional(list(string))<br/>    sku                           = optional(string)<br/>    capacity                      = optional(number)<br/>    auto_inflate_enabled          = optional(bool)<br/>    dedicated_cluster_id          = optional(string)<br/>    maximum_throughput_units      = optional(number)<br/>    local_authentication_enabled  = optional(bool)<br/>    public_network_access_enabled = optional(bool)<br/>    minimum_tls_version           = optional(string)<br/>    network_rulesets = optional(object({<br/>      default_action                 = optional(string)<br/>      public_network_access_enabled  = optional(bool)<br/>      trusted_service_access_enabled = optional(bool)<br/>      virtual_network_rule = optional(list(object({<br/>        subnet_id                                       = string<br/>        ignore_missing_virtual_network_service_endpoint = optional(bool)<br/>      })))<br/>      ip_rule = optional(list(object({<br/>        ip_mask = string<br/>        action  = optional(string)<br/>      })))<br/>    }))<br/><br/>    create_eventhub   = optional(bool, true)<br/>    eventhub_name     = optional(string)<br/>    partition_count   = optional(number)<br/>    message_retention = optional(string)<br/><br/>    capture_description = optional(object({<br/>      enabled             = optional(bool)<br/>      encoding            = optional(string)<br/>      interval_in_seconds = optional(number)<br/>      size_limit_in_bytes = optional(number)<br/>      skip_empty_archives = optional(bool)<br/>      destination = optional(object({<br/>        name                = optional(string, "EventHubArchive.AzureBlockBlob")<br/>        storage_account_id  = string<br/>        blob_container_name = string<br/>        archive_name_format = string<br/>      }))<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
