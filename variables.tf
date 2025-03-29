@@ -1,7 +1,7 @@
 variable "eventhubs" {
   description = "List of Eventhubs to create"
   type = list(object({
-    name                          = string
+    namespace_name                = string
     location                      = optional(string, "uksouth")
     rg_name                       = string
     tags                          = optional(map(string))
@@ -27,6 +27,29 @@ variable "eventhubs" {
         ip_mask = string
         action  = optional(string)
       })))
+    }))
+
+    create_eventhub   = optional(bool, true)
+    eventhub_name     = optional(string)
+    partition_count   = optional(number)
+    message_retention = optional(string)
+
+    capture_description = optional(object({
+      enabled             = optional(bool)
+      encoding            = optional(string)
+      interval_in_seconds = optional(number)
+      size_limit_in_bytes = optional(number)
+      skip_empty_archives = optional(bool)
+      destination = optional(object({
+        name                = string
+        storage_account_id  = string
+        blob_container_name = string
+        archive_name_format = string
+        status              = optional(string)
+        capture_enabled     = optional(bool)
+        capture_interval    = optional(string)
+        capture_size_limit  = optional(string)
+      }))
     }))
   }))
 }
