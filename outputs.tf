@@ -16,18 +16,18 @@ output "eventhub_identities" {
 
 output "eventhub_ids" {
   description = "The IDs of the Dev Centers"
-  value       = { for ev in azurerm_eventhub_namespace.eventhubs : ev.namespace_name => ev.id }
+  value       = { for ev in azurerm_eventhub_namespace.eventhubs : ev.name => ev.id }
 }
 
 output "eventhub_namespace_names" {
   description = "The default name of the Dev Centers"
-  value       = { for ev in azurerm_eventhub_namespace.eventhubs : ev.namespace_name => ev.namespace_name }
+  value       = { for ev in azurerm_eventhub_namespace.eventhubs : ev.name => ev.name }
 }
 
 output "eventhub_root_manage_shared_access_keys" {
   description = "RootManageSharedAccessKey values for each Event Hub Namespace"
   value = {
-    for ev in azurerm_eventhub_namespace.eventhubs : ev.namespace_name => {
+    for ev in azurerm_eventhub_namespace.eventhubs : ev.name => {
       default_primary_connection_string         = ev.default_primary_connection_string
       default_primary_connection_string_alias   = ev.default_primary_connection_string_alias
       default_primary_key                       = ev.default_primary_key

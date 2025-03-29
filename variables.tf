@@ -18,7 +18,7 @@ variable "eventhubs" {
     network_rulesets = optional(object({
       default_action                = optional(string)
       public_network_access_enabled = optional(bool)
-      trusted_services_enabled      = optional(bool)
+      trusted_service_access_enabled     = optional(bool)
       virtual_network_rule = optional(list(object({
         subnet_id                                       = string
         ignore_missing_virtual_network_service_endpoint = optional(bool)
@@ -41,14 +41,10 @@ variable "eventhubs" {
       size_limit_in_bytes = optional(number)
       skip_empty_archives = optional(bool)
       destination = optional(object({
-        name                = string
+        name                = optional(string, "EventHubArchive.AzureBlockBlob")
         storage_account_id  = string
         blob_container_name = string
         archive_name_format = string
-        status              = optional(string)
-        capture_enabled     = optional(bool)
-        capture_interval    = optional(string)
-        capture_size_limit  = optional(string)
       }))
     }))
   }))

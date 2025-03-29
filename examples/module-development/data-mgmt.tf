@@ -18,3 +18,7 @@ data "azurerm_user_assigned_identity" "mgmt_user_assigned_id" {
   name                = "uid-${var.short}-${var.loc}-${var.env}-mgmt-01"
   resource_group_name = data.azurerm_resource_group.mgmt_rg.name
 }
+
+data "http" "client_ip" {
+  url = "https://checkip.amazonaws.com"
+}

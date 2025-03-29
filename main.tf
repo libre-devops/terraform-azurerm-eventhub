@@ -22,7 +22,7 @@ resource "azurerm_eventhub_namespace" "eventhubs" {
     content {
       default_action                = try(network_rulesets.value.default_action, null)
       public_network_access_enabled = try(network_rulesets.value.public_network_access_enabled, null)
-      trusted_services_enabled      = try(network_rulesets.value.trusted_services_enabled, null)
+      trusted_service_access_enabled     = try(network_rulesets.value.trusted_service_access_enabled, null)
 
       dynamic "virtual_network_rule" {
         for_each = network_rulesets.value.virtual_network_rule != null ? network_rulesets.value.virtual_network_rule : []
@@ -103,11 +103,6 @@ resource "azurerm_eventhub" "eventhubs" {
           storage_account_id  = destination.value.storage_account_id
           blob_container_name = destination.value.blob_container_name
           archive_name_format = destination.value.archive_name_format
-
-          status             = try(destination.value.status, null)
-          capture_enabled    = try(destination.value.capture_enabled, false)
-          capture_interval   = try(destination.value.capture_interval, null)
-          capture_size_limit = try(destination.value.capture_size_limit, null)
         }
       }
     }
